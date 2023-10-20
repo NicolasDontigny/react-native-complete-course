@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import Flexbox from './Flexbox';
 
 export default function App() {
@@ -14,7 +14,7 @@ export default function App() {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
       {
-        id: Math.random() * 10000,
+        id: (Math.random() * 10000).toString(),
         name: enteredGoalText,
       },
     ])
@@ -41,6 +41,26 @@ export default function App() {
             </View>
           ))}
         </ScrollView>
+      </View>
+
+      <View style={styles.container}>
+        <FlatList
+          data={courseGoals}
+          keyExtractor={(item, _index) => item.id}
+          renderItem={(itemData) => {
+            console.log('itemData:', itemData);
+            // ITEM DATA
+            // {
+            //   index: number,
+            //   item: TItem
+            // }
+            return (
+              <View style={styles.goalItem}>
+                <Text style={styles.goalText}>{itemData.item.name}</Text>
+              </View>
+            )
+          }}
+        />
       </View>
 
       {/* <Flexbox /> */}
