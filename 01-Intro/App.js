@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Button,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import Flexbox from './Flexbox';
+import GoalItem from './components/GoalItem';
+import GoalInput from './components/GoalInput';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
-  const [enteredGoalText, setEnteredGoalText] = useState('')
+  const [modalIsVisible, setModalIsVisible] = useState(false)
   const [courseGoals, setCourseGoals] = useState([])
 
-  const goalInputHandler = (enteredText) => {
-    setEnteredGoalText(enteredText)
-  }
-
-  const addGoalHandler = () => {
+  const addGoalHandler = (enteredGoalText) => {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
       {
@@ -20,58 +26,72 @@ export default function App() {
     ])
   }
 
+  const startAddGoalHandler = () => {
+    setModalIsVisible(true)
+  }
+
+  const closeModalHandler = () => {
+    setModalIsVisible(false)
+  }
+
+  const deleteGoalHandler = (goalId) => {
+    setCourseGoals(currentCourseGoals => currentCourseGoals.filter(goal => goal.id !== goalId))
+  }
+
   return (
-    <View style={styles.container}>
-      {/* <View>
+    <>
+      <StatusBar style='light' />
+
+      <View style={styles.container}>
+        <Button title='Add New Goal' color='#5e0acc' onPress={startAddGoalHandler} />
+        {/* <View>
         <Text style={styles.survivor}>Survivor is AWESOMEEEE!</Text>
       </View>
       <Text style={{ margin: 24, padding: 12, borderColor: 'red', borderWidth: 2 }}>Damn that last tribal though!</Text>
       <Button title='Tap me !' /> */}
 
-      <View style={styles.form}>
-        <TextInput style={styles.textInput} placeholder='Enter your goal here' onChangeText={goalInputHandler} />
-        <Button title='ADD GOAL!!!!' onPress={addGoalHandler} />
-      </View>
-
-      <View style={styles.container}>
-        <ScrollView>
-          {courseGoals.map(goal => (
-            <View key={goal.id} style={styles.goalItem}>
-              <Text style={styles.goalText}>{goal.name}</Text>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-
-      <View style={styles.container}>
-        <FlatList
-          data={courseGoals}
-          keyExtractor={(item, _index) => item.id}
-          renderItem={(itemData) => {
-            console.log('itemData:', itemData);
-            // ITEM DATA
-            // {
-            //   index: number,
-            //   item: TItem
-            // }
-            return (
-              <View style={styles.goalItem}>
-                <Text style={styles.goalText}>{itemData.item.name}</Text>
-              </View>
-            )
-          }}
+        <GoalInput
+          addGoalHandler={addGoalHandler}
+          closeModalHandler={closeModalHandler}
+          isVisible={modalIsVisible}
         />
-      </View>
 
-      {/* <Flexbox /> */}
-    </View>
+        <View style={styles.container}>
+          <ScrollView>
+            {courseGoals.map(goal => (
+              <View key={goal.id} style={styles.goalItem}>
+                <Text style={styles.goalText}>{goal.name}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+
+        <View style={styles.container}>
+          <FlatList
+            data={courseGoals}
+            keyExtractor={(item, _index) => item.id}
+            renderItem={(itemData) => {
+              console.log('itemData:', itemData);
+              // ITEM DATA
+              // {
+              //   index: number,
+              //   item: TItem
+              // }
+              return <GoalItem item={itemData.item} deleteGoalHandler={deleteGoalHandler} />
+            }}
+          />
+        </View>
+
+        {/* <Flexbox /> */}
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     alignItems: 'stretch',
     justifyContent: 'center',
     fontSize: 36,
@@ -82,17 +102,6 @@ const styles = StyleSheet.create({
     color: 'blue',
     fontSize: 36,
   },
-  form: {
-    marginTop: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    width: '60%',
-    marginRight: 8,
-  },
   goalsContainer: {
     flex: 1,
     width: '100%',
@@ -101,13 +110,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 36,
   },
-  goalItem: {
-    margin: 8,
-    padding: 8,
-    borderRadius: 6,
-    backgroundColor: '#5e0acc',
-  },
-  goalText: {
-    color: 'white',
-  }
+  // goalItem: {
+  //   margin: 8,
+  //   padding: 8,
+  //   borderRadius: 6,
+  //   backgroundColor: '#5e0acc',
+  // },
+  // goalText: {
+  //   color: 'white',
+  // }
 });
