@@ -38,6 +38,8 @@ export default function App() {
     setCourseGoals(currentCourseGoals => currentCourseGoals.filter(goal => goal.id !== goalId))
   }
 
+  console.log('courseGoals:', courseGoals);
+
   return (
     <>
       <StatusBar style='light' />
@@ -71,7 +73,6 @@ export default function App() {
             data={courseGoals}
             keyExtractor={(item, _index) => item.id}
             renderItem={(itemData) => {
-              console.log('itemData:', itemData);
               // ITEM DATA
               // {
               //   index: number,
