@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "es2015",
+    "baseUrl": ".",
+    "checkJs": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "allowUmdGlobalAccess": true
+  }
+}
