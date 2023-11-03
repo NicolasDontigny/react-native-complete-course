@@ -1,20 +1,37 @@
-import { TextInput, View, StyleSheet } from 'react-native';
-import PrimaryButton from '../components/PrimaryButton';
+import { Alert, TextInput, View, StyleSheet } from 'react-native';
+import PrimaryButton from '../components/ui/PrimaryButton';
 import { useState } from 'react';
+import Colors from '../constants/colors'
 
-function StartGameScreen() {
+function StartGameScreen({ onNumberPicked }) {
   const [enteredNumber, setEnteredNumber] = useState('')
 
   const numberInputHandler = (value) => {
     setEnteredNumber(value)
   }
 
-  const resetHandler = () => {
-    console.log('RESET');
+  const resetInputHandler = () => {
+    setEnteredNumber('');
   }
 
   const confirmHandler = () => {
-    console.log('CONFIRM:', enteredNumber);
+    const chosenNumber = parseInt(enteredNumber);
+
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert(
+        'Invalid number!',
+        'Please enter a valid number between 0 and 99',
+        [{
+          text: 'Okay',
+          style: 'destructive',
+          onPress: resetInputHandler,
+        }]
+      );
+
+      return;
+    }
+
+    onNumberPicked(chosenNumber);
   }
 
   return <View style={styles.inputContainer} >
@@ -31,7 +48,7 @@ function StartGameScreen() {
     />
     <View style={styles.buttonsContainer}>
       <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={resetHandler}>Reset</PrimaryButton>
+        <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
       </View>
       <View style={styles.buttonContainer}>
         <PrimaryButton onPress={confirmHandler}>Confirm</PrimaryButton>
@@ -50,7 +67,7 @@ const styles = StyleSheet.create({
     marginTop: 100,
     marginHorizontal: 24,
     borderRadius: 12,
-    backgroundColor: '#3b021f',
+    backgroundColor: Colors.primary700,
     // Elevation is an android-specific property only
     elevation: 4,
     // Shadow properties for ios only
@@ -65,9 +82,9 @@ const styles = StyleSheet.create({
     width: 50,
     textAlign: 'center',
     fontSize: 32,
-    borderBottomColor: '#ddb52f',
+    borderBottomColor: Colors.accent500,
     borderBottomWidth: 2,
-    color: '#ddb52f',
+    color: Colors.accent500,
     marginVertical: 8,
     fontWeight: 'bold'
   },
