@@ -19,7 +19,6 @@ export default function App() {
   const [guessRounds, setGuessRounds] = useState(0);
 
   useEffect(() => {
-    console.log('USE EFFECT');
     async function prepare() {
       try {
         // Pre-load fonts, make any API calls you need to do here
@@ -29,11 +28,10 @@ export default function App() {
         });
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 500));
       } catch (e) {
         console.warn(e);
       } finally {
-        console.log('FINALLY:');
         // Tell the application to render
         setAppIsReady(true);
       }
@@ -61,15 +59,15 @@ export default function App() {
     setUserNumber(pickedNumber);
   }
 
-  const incrementRoundHandler = () => setGuessRounds(previousNumber => previousNumber + 1)
-
-  const gameOverHandler = () => {
+  const gameOverHandler = (rounds) => {
     setGameIsOver(true)
+    setGuessRounds(rounds.length)
   }
 
   const startNewGameHandler = () => {
     setGameIsOver(false)
     setUserNumber(null)
+    setGuessRounds(0)
   }
 
   let screen = <StartGameScreen onNumberPicked={pickedNumberHandler} />;
@@ -81,7 +79,10 @@ export default function App() {
       numberOfRounds={guessRounds}
     ></GameOverScreen>
   } else if (userNumber) {
-    screen = <GameScreen pickedNumber={userNumber} onGameOver={gameOverHandler}></GameScreen>
+    screen = <GameScreen
+      pickedNumber={userNumber}
+      onGameOver={gameOverHandler}
+    ></GameScreen>
   }
 
   return (
