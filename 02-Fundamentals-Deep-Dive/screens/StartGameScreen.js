@@ -2,6 +2,7 @@ import { Alert, TextInput, View, StyleSheet } from 'react-native';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import { useState } from 'react';
 import Colors from '../constants/colors'
+import Title from '../components/ui/Title';
 
 function StartGameScreen({ onNumberPicked }) {
   const [enteredNumber, setEnteredNumber] = useState('')
@@ -36,6 +37,7 @@ function StartGameScreen({ onNumberPicked }) {
 
   return <View style={styles.inputContainer} >
     {/* Text Input value is ALWAYS of type string, no matter the keyboardType */}
+    <Title>Guess my Number</Title>
     <TextInput
       inputMode='numeric'
       keyboardType='number-pad'

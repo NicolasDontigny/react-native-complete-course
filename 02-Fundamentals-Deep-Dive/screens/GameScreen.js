@@ -3,6 +3,7 @@ import NumberContainer from '../components/game/NumberContainer';
 import Title from '../components/ui/Title';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'
 
 const generateRandomBetween = (min, max, exclude = null) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -15,9 +16,9 @@ const generateRandomBetween = (min, max, exclude = null) => {
 }
 
 function GameScreen({ pickedNumber, onGameOver }) {
-  const initialGuess = generateRandomBetween(1, 100, pickedNumber)
+  const initialGuess = generateRandomBetween(1, 40, pickedNumber)
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
-  const [maxGuess, setMaxGuess] = useState(100);
+  const [maxGuess, setMaxGuess] = useState(40);
   const [minGuess, setMinGuess] = useState(1);
 
   useEffect(() => {
@@ -53,10 +54,14 @@ function GameScreen({ pickedNumber, onGameOver }) {
     <NumberContainer>{currentGuess}</NumberContainer>
     <View style={styles.higherLowerContainer}>
       <View style={styles.button}>
-        <PrimaryButton onPress={nextGuessHandler.bind(this, false)}>-</PrimaryButton>
+        <PrimaryButton onPress={nextGuessHandler.bind(this, false)}>
+          <Ionicons name="md-remove" size={24} color="white" />
+        </PrimaryButton>
       </View>
       <View style={styles.button}>
-        <PrimaryButton onPress={nextGuessHandler.bind(this, true)}>+</PrimaryButton>
+        <PrimaryButton onPress={nextGuessHandler.bind(this, true)}>
+          <Ionicons name="md-add" size={24} color="white" />
+        </PrimaryButton>
       </View>
     </View>
     <View>
